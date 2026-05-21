@@ -8,6 +8,7 @@ import {
   validationResult,
 } from "express-validator";
 import { userAddSchemaValidation } from "../util/userSchemaValidation.js";
+import { hashPassword } from "../lib/hellper.js";
 
 const userRouter = Router();
 
@@ -71,6 +72,8 @@ userRouter.post(
     // const { body } = request;
 
     // const newUser = new User(body);
+    data.password = hashPassword(data.password);
+
     const newUser = new User(data);
     try {
       const savedUser = await newUser.save();

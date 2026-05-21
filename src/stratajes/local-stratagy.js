@@ -3,6 +3,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import { users } from "../lib/userList.js";
 import { User } from "../schemas/user.js";
+import { comparePassowrd } from "../lib/hellper.js";
 
 passport.serializeUser((user, done) => {
   console.log("Srializaing Page");
@@ -32,7 +33,10 @@ export default passport.use(
 
       //   const findUser = users.find((user) => user.username === username);
       if (!findUser) throw new Error("User not found");
-      if (findUser.password != password) throw new Error("Invalid Credentials");
+      //   if (findUser.password != password) throw new Error("Invalid Credentials");
+      //hashed password comparission
+      if (!comparePassowrd(password, findUser.password))
+        throw new Error("Invalid Credentials");
       done(null, findUser);
     } catch (error) {
       done(error, null);
